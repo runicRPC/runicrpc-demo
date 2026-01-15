@@ -1,0 +1,32 @@
+{
+  "name": "demo-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "node server.js",
+    "dev:next": "next dev -p 3001",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.js",
+    "start:next": "next start -p 3001",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@runic-rpc/sdk": "^0.1.2",
+    "@runic-rpc/ui": "^0.1.2",
+    "@solana/web3.js": "^1.95.8",
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "lucide-react": "^0.469.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.9.3"
+  }
+}

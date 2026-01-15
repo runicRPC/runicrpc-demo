@@ -1,0 +1,32 @@
+{
+  "providers": {
+    "helius": {
+      "apiKey": "your-helius-api-key"
+    },
+    "alchemy": {
+      "apiKey": "your-alchemy-api-key"
+    }
+  },
+  "strategy": "latency-based",
+  "cache": {
+    "enabled": true,
+    "ttl": 1000,
+    "maxSize": 1000
+  },
+  "retry": {
+    "maxAttempts": 3,
+    "initialDelay": 100,
+    "maxDelay": 5000
+  },
+  "circuitBreaker": {
+    "failureThreshold": 5,
+    "timeout": 30000
+  },
+  "healthCheck": {
+    "enabled": true,
+    "interval": 30000,
+    "timeout": 5000
+  },
+  "rateLimit": 100,
+  "logLevel": "info"
+}
