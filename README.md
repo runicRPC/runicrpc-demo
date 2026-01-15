@@ -30,7 +30,7 @@ A production-ready demonstration of the RunicRPC SDK in action. This app showcas
 
 1. **Navigate to the demo app directory:**
    ```bash
-   cd apps/demo-app
+   cd demo-app
    ```
 
 2. **Install dependencies** (if not already done from monorepo root):
@@ -230,7 +230,7 @@ The CLI and Dashboard will load this config and use your environment variables.
 4. Free tier: 100 requests/second
 
 ### Alchemy
-1. Sign up at [alchemy.com](https://.com)
+1. Sign up at [alchemy.com](https://www.alchemy.com)
 2. Create a Solana app
 3. Copy your API key
 4. Free tier: 300M compute units/month
@@ -285,7 +285,7 @@ const stats = rpc.getStats();
 ### Architecture
 
 ```
-apps/demo-app/
+demo-app/
 ├── app/                    # Next.js App Router pages
 │   ├── layout.tsx         # Root layout with AppShell
 │   ├── page.tsx           # Main dashboard
@@ -447,40 +447,7 @@ If you still see it, just ignore it - it's only during shutdown and doesn't affe
 2. Increase TTL: `cache: { ttl: 5000 }`
 3. Make identical requests to trigger cache hits
 
-### Build errors
-
-**Cause**: Workspace dependencies not linked
-
-**Solution**:
-```bash
-# From monorepo root
-pnpm install
-pnpm build
-
-# Then try demo app
-cd apps/demo-app
-pnpm dev
-```
-
-## Key Learnings
-
-This demo showcases:
-
-✅ **Zero-dependency SDK** - RunicRPC has no runtime deps except @solana/web3.js
-✅ **Automatic failover** - Requests succeed even if some providers fail
-✅ **Smart caching** - Reduces API costs and improves performance
-✅ **Circuit breaker** - Protects against cascading failures
-✅ **Comprehensive events** - Full observability into SDK behavior
-✅ **Production-ready** - Built with Next.js 15, TypeScript strict mode, Tailwind CSS
-
-## Resources
-
-- [RunicRPC Documentation](../docs)
-- [SDK API Reference](../../packages/sdk/README.md)
-- [Design System](../../packages/ui/README.md)
-- [Helius API Docs](https://docs.helius.dev)
-- [Alchemy Solana Docs](https://docs.alchemy.com/docs/solana-getting-started)
-- [Solana Web3.js](https://solana-labs.github.io/solana-web3.js/)
+[Solana Web3.js](https://solana-labs.github.io/solana-web3.js/)
 
 ## License
 
