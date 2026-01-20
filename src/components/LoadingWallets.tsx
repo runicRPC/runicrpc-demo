@@ -26,7 +26,7 @@ export function LoadingWallets({ wallets }: LoadingWalletsProps) {
             Fetching Wallet Balances
           </h2>
           <p className="text-sm sm:text-base text-text-secondary px-4">
-            RunicRPC is querying Solana blockchain...
+            runicRPC is querying Solana blockchain...
           </p>
         </div>
 

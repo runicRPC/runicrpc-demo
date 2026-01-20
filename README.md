@@ -1,19 +1,19 @@
-# RunicRPC Demo App - Solana Wallet Tracker
+# runicRPC Demo App - Solana Wallet Tracker
 
-A production-ready demonstration of the RunicRPC SDK in action. This app showcases real-time Solana wallet tracking with intelligent RPC load balancing, circuit breaking, and comprehensive observability.
+A production-ready demonstration of the runicRPC SDK in action. This app showcases real-time Solana wallet tracking with intelligent RPC load balancing, circuit breaking, and comprehensive observability.
 
 ## Features
 
 ### Core Functionality
 - **Real-time wallet balance tracking** - Monitor multiple Solana wallets simultaneously
-- **Automatic load balancing** - RunicRPC distributes requests across configured providers
+- **Automatic load balancing** - runicRPC distributes requests across configured providers
 - **Smart caching** - Reduces API calls and improves response times
 - **Circuit breaker protection** - Prevents cascading failures when endpoints are unhealthy
 - **Live activity feed** - See requests, cache hits, retries, and errors in real-time
 - **Endpoint health monitoring** - Track performance and status of each RPC provider
 
 ### UI/UX Highlights
-- Matches RunicRPC design system (dark theme with cyan accents)
+- Matches runicRPC design system (dark theme with cyan accents)
 - Responsive layout that works on mobile and desktop
 - Interactive wallet cards with copy-to-clipboard and Solscan integration
 - Real-time stats dashboard showing performance metrics
@@ -53,7 +53,7 @@ A production-ready demonstration of the RunicRPC SDK in action. This app showcas
    NEXT_PUBLIC_QUICKNODE_HTTP_URL=https://your-endpoint.quiknode.pro/
    NEXT_PUBLIC_QUICKNODE_WS_URL=wss://your-endpoint.quiknode.pro/
 
-   # Optional: RunicRPC settings
+   # Optional: runicRPC settings
    NEXT_PUBLIC_RUNIC_STRATEGY=latency-based
    NEXT_PUBLIC_RUNIC_LOG_LEVEL=info
    ```
@@ -68,7 +68,7 @@ A production-ready demonstration of the RunicRPC SDK in action. This app showcas
    http://localhost:3001
    ```
 
-## Using RunicRPC CLI & Dashboard
+## Using runicRPC CLI & Dashboard
 
 The demo app uses the SDK, but you can also use the CLI and Dashboard packages alongside it for enhanced monitoring and testing.
 
@@ -126,7 +126,7 @@ runic-rpc init
 
 ### Using the Dashboard Package
 
-The Dashboard provides a web UI to monitor your RunicRPC instance.
+The Dashboard provides a web UI to monitor your runicRPC instance.
 
 **Install globally:**
 ```bash
@@ -156,7 +156,7 @@ You can run the demo app, CLI monitor, and dashboard simultaneously:
 
 **Terminal 1 - Demo App:**
 ```bash
-cd apps/demo-app
+cd demo-app
 pnpm dev
 # → http://localhost:3001
 ```
@@ -169,14 +169,14 @@ runic-rpc-dashboard
 
 **Terminal 3 - CLI Monitor:**
 ```bash
-cd apps/demo-app
+cd demo-app
 runic-rpc monitor --config ./runic.config.json
 # Interactive terminal UI
 ```
 
 **What this gives you:**
 - **Demo app (3001)**: Your custom wallet tracker application
-- **Dashboard (3000)**: Official RunicRPC monitoring UI
+- **Dashboard (3000)**: Official runicRPC monitoring UI
 - **CLI monitor**: Terminal-based real-time stats
 
 All three can share the same configuration via environment variables and `runic.config.json`.
@@ -230,7 +230,7 @@ The CLI and Dashboard will load this config and use your environment variables.
 4. Free tier: 100 requests/second
 
 ### Alchemy
-1. Sign up at [alchemy.com](https://www.alchemy.com)
+1. Sign up at [alchemy.com](https://.com)
 2. Create a Solana app
 3. Copy your API key
 4. Free tier: 300M compute units/month
@@ -243,9 +243,9 @@ The CLI and Dashboard will load this config and use your environment variables.
 
 ## How It Works
 
-### RunicRPC Integration
+### runicRPC Integration
 
-The app demonstrates key RunicRPC features:
+The app demonstrates key runicRPC features:
 
 **1. Provider Configuration** ([src/lib/runic.ts](./src/lib/runic.ts))
 ```typescript
@@ -263,13 +263,13 @@ const rpc = new RunicRPC({
 
 **2. Making Requests**
 ```typescript
-// RunicRPC automatically selects the best endpoint
+// runicRPC automatically selects the best endpoint
 const balance = await rpc.request('getBalance', [publicKey]);
 ```
 
 **3. Event Monitoring**
 ```typescript
-// Listen to RunicRPC events for observability
+// Listen to runicRPC events for observability
 rpc.on('cache:hit', () => console.log('Cache hit!'));
 rpc.on('request:retry', (event) => console.log('Retrying...'));
 rpc.on('circuit:open', (event) => console.log('Circuit breaker opened'));
@@ -285,7 +285,7 @@ const stats = rpc.getStats();
 ### Architecture
 
 ```
-demo-app/
+apps/demo-app/
 ├── app/                    # Next.js App Router pages
 │   ├── layout.tsx         # Root layout with AppShell
 │   ├── page.tsx           # Main dashboard
@@ -293,7 +293,7 @@ demo-app/
 │   └── settings/          # Settings page
 ├── src/
 │   ├── lib/
-│   │   ├── runic.ts       # RunicRPC instance configuration
+│   │   ├── runic.ts       # runicRPC instance configuration
 │   │   └── wallets.ts     # Wallet utilities and demo data
 │   └── components/
 │       ├── WalletCard.tsx        # Wallet balance display
@@ -316,7 +316,7 @@ You can modify the wallet list in [src/lib/wallets.ts](./src/lib/wallets.ts).
 
 ## Routing Strategies
 
-RunicRPC supports 4 routing strategies (configured via `NEXT_PUBLIC_RUNIC_STRATEGY`):
+runicRPC supports 4 routing strategies (configured via `NEXT_PUBLIC_RUNIC_STRATEGY`):
 
 ### 1. Latency-Based (Default - Recommended)
 Selects endpoints based on EWMA latency and success rate scoring. Best for production use.
@@ -363,7 +363,7 @@ export const DEMO_WALLETS: WalletData[] = [
 ];
 ```
 
-### Adjusting RunicRPC Settings
+### Adjusting runicRPC Settings
 
 Edit [src/lib/runic.ts](./src/lib/runic.ts) to customize:
 
@@ -431,7 +431,7 @@ If you still see it, just ignore it - it's only during shutdown and doesn't affe
 
 ### Balance fetching is slow
 
-**Cause**: RunicRPC is trying unhealthy endpoints first
+**Cause**: runicRPC is trying unhealthy endpoints first
 
 **Solution**:
 1. Switch to `latency-based` strategy (default)
@@ -447,12 +447,45 @@ If you still see it, just ignore it - it's only during shutdown and doesn't affe
 2. Increase TTL: `cache: { ttl: 5000 }`
 3. Make identical requests to trigger cache hits
 
-[Solana Web3.js](https://solana-labs.github.io/solana-web3.js/)
+### Build errors
+
+**Cause**: Workspace dependencies not linked
+
+**Solution**:
+```bash
+# From monorepo root
+pnpm install
+pnpm build
+
+# Then try demo app
+cd demo-app
+pnpm dev
+```
+
+## Key Learnings
+
+This demo showcases:
+
+✅ **Zero-dependency SDK** - runicRPC has no runtime deps except @solana/web3.js
+✅ **Automatic failover** - Requests succeed even if some providers fail
+✅ **Smart caching** - Reduces API costs and improves performance
+✅ **Circuit breaker** - Protects against cascading failures
+✅ **Comprehensive events** - Full observability into SDK behavior
+✅ **Production-ready** - Built with Next.js 15, TypeScript strict mode, Tailwind CSS
+
+## Resources
+
+- [runicRPC Documentation](../docs)
+- [SDK API Reference](../../packages/sdk/README.md)
+- [Design System](../../packages/ui/README.md)
+- [Helius API Docs](https://docs.helius.dev)
+- [Alchemy Solana Docs](https://docs.alchemy.com/docs/solana-getting-started)
+- [Solana Web3.js](https://solana-labs.github.io/solana-web3.js/)
 
 ## License
 
-MIT - Same as RunicRPC monorepo
+MIT - Same as runicRPC monorepo
 
 ---
 
-**Built with RunicRPC** - Ancient reliability for modern Solana infrastructure
+**Built with runicRPC** - Ancient reliability for modern Solana infrastructure

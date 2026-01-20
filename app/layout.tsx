@@ -1,16 +1,21 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Space_Grotesk } from 'next/font/google';
 import React from 'react';
 import '@runic-rpc/ui/styles';
 import './globals.css';
 import { ClientLayout } from '@/components/ClientLayout';
 import { NotificationProvider } from '@/contexts/NotificationContext';
+import { RefetchProvider } from '@/contexts/RefetchContext';
 
-const inter = Inter({ subsets: ['latin'] });
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-space-grotesk',
+});
 
 export const metadata: Metadata = {
-  title: 'RunicRPC Demo - Solana Wallet Tracker',
-  description: 'Real-time Solana wallet tracking powered by RunicRPC',
+  title: 'runicRPC Demo - Solana Wallet Tracker',
+  description: 'Real-time Solana wallet tracking powered by runicRPC',
 };
 
 export default function RootLayout({
@@ -20,9 +25,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className} suppressHydrationWarning>
+      <body className={`${spaceGrotesk.className} ${spaceGrotesk.variable}`} suppressHydrationWarning>
         <NotificationProvider>
-          <ClientLayout>{children}</ClientLayout>
+          <RefetchProvider>
+            <ClientLayout>{children}</ClientLayout>
+          </RefetchProvider>
         </NotificationProvider>
       </body>
     </html>

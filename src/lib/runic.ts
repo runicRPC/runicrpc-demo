@@ -1,4 +1,5 @@
 import { RunicRPC } from '@runic-rpc/sdk';
+import runicConfig from '../../runic.config.json';
 
 let runicInstance: RunicRPC | null = null;
 
@@ -9,49 +10,60 @@ export function getRunicRPC(): RunicRPC {
 
   const providers: Record<string, { apiKey: string }> = {};
 
+  // Check environment variables first
   if (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_HELIUS_API_KEY) {
     providers.helius = { apiKey: process.env.NEXT_PUBLIC_HELIUS_API_KEY };
+  } else if (runicConfig.providers?.helius?.apiKey) {
+    // Fall back to config file
+    providers.helius = { apiKey: runicConfig.providers.helius.apiKey };
   }
 
   if (typeof process !== 'undefined' && process.env.NEXT_PUBLIC_ALCHEMY_API_KEY) {
     providers.alchemy = { apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY };
+  } else if (runicConfig.providers?.alchemy?.apiKey) {
+    // Fall back to config file
+    providers.alchemy = { apiKey: runicConfig.providers.alchemy.apiKey };
   }
 
-  const strategy = ((typeof process !== 'undefined' && process.env.NEXT_PUBLIC_RUNIC_STRATEGY) || 'latency-based') as
+  const strategy = ((typeof process !== 'undefined' && process.env.NEXT_PUBLIC_RUNIC_STRATEGY) || runicConfig.strategy || 'latency-based') as
     'round-robin' | 'latency-based' | 'weighted' | 'random';
 
-  const logLevel = ((typeof process !== 'undefined' && process.env.NEXT_PUBLIC_RUNIC_LOG_LEVEL) || 'info') as
+  const logLevel = ((typeof process !== 'undefined' && process.env.NEXT_PUBLIC_RUNIC_LOG_LEVEL) || runicConfig.logLevel || 'info') as
     'debug' | 'info' | 'warn' | 'error';
 
+  const hasProviders = Object.keys(providers).length > 0;
+
   runicInstance = new RunicRPC({
-    providers: Object.keys(providers).length > 0 ? providers : undefined,
+    providers: hasProviders ? providers : undefined,
     strategy,
     cache: {
-      enabled: true,
-      ttl: 2000,
-      maxSize: 500,
+      enabled: runicConfig.cache?.enabled ?? true,
+      ttl: runicConfig.cache?.ttl ?? 2000,
+      maxSize: runicConfig.cache?.maxSize ?? 500,
     },
     retry: {
-      maxAttempts: 3,
-      initialDelay: 100,
-      maxDelay: 2000,
+      maxAttempts: runicConfig.retry?.maxAttempts ?? 3,
+      initialDelay: runicConfig.retry?.initialDelay ?? 100,
+      maxDelay: runicConfig.retry?.maxDelay ?? 2000,
       backoffMultiplier: 2,
     },
     circuitBreaker: {
-      failureThreshold: 5,
+      failureThreshold: runicConfig.circuitBreaker?.failureThreshold ?? 5,
       successThreshold: 2,
-      timeout: 30000,
+      timeout: runicConfig.circuitBreaker?.timeout ?? 30000,
     },
     healthCheck: {
-      enabled: true,
-      interval: 30000,
-      timeout: 5000,
+      enabled: runicConfig.healthCheck?.enabled ?? true,
+      interval: runicConfig.healthCheck?.interval ?? 30000,
+      timeout: runicConfig.healthCheck?.timeout ?? 5000,
       unhealthyThreshold: 3,
       healthyThreshold: 2,
     },
-    rateLimit: 100,
+    rateLimit: runicConfig.rateLimit ?? 100,
     logLevel,
-    useFallback: true,
+    // Only use fallback if we have providers configured (fallback will try public endpoints if providers fail)
+    // If no providers, don't use fallback to avoid 403 errors from public endpoints
+    useFallback: hasProviders,
   });
 
   return runicInstance;

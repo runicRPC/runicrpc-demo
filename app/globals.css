@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Override a hardcoded scrollbar color from @runic-rpc/ui styles */
+@layer base {
+  * {
+    scrollbar-color: rgba(254, 64, 55, 0.3) #1A1A1A;
+  }
+}

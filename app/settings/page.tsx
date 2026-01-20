@@ -19,7 +19,7 @@ export default function SettingsPage() {
           <h1 className="text-2xl sm:text-3xl font-semibold text-text-primary">Settings</h1>
         </div>
         <p className="text-sm sm:text-base text-text-secondary">
-          Configure RunicRPC behavior and preferences
+          Configure runicRPC behavior and preferences
         </p>
       </div>
 
@@ -172,7 +172,7 @@ export default function SettingsPage() {
       <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-3 sm:p-4">
         <p className="text-xs sm:text-sm text-text-secondary">
           <span className="font-semibold text-blue-400">Note:</span> These settings are for demonstration purposes.
-          In a production app, you would reinitialize RunicRPC with the new configuration.
+          In a production app, you would reinitialize runicRPC with the new configuration.
         </p>
       </div>
     </div>

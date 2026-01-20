@@ -26,7 +26,7 @@ export function WelcomeScreen({ onStart }: WelcomeScreenProps) {
             <Rocket className="w-7 h-7 sm:w-8 sm:h-8 text-dark-bg" />
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-text-primary px-4">
-            Welcome to RunicRPC Demo
+            Welcome to runicRPC Demo
           </h1>
           <p className="text-base sm:text-lg md:text-xl text-text-secondary max-w-2xl mx-auto px-4">
             Experience intelligent Solana RPC load balancing in real-time

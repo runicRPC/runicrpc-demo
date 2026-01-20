@@ -11,6 +11,7 @@ import { ActivityLog, ActivityItem } from '@/components/ActivityLog';
 import { WelcomeScreen } from '@/components/WelcomeScreen';
 import { LoadingWallets } from '@/components/LoadingWallets';
 import { useNotifications } from '@/contexts/NotificationContext';
+import { useRefetch } from '@/contexts/RefetchContext';
 import { Server, Zap, TrendingUp, Database } from 'lucide-react';
 
 interface WalletBalance {
@@ -23,6 +24,7 @@ type AppState = 'welcome' | 'loading' | 'dashboard';
 
 export default function HomePage() {
   const { addNotification } = useNotifications();
+  const { registerRefetch, unregisterRefetch } = useRefetch();
   const [appState, setAppState] = useState<AppState>('welcome');
   const [walletBalances, setWalletBalances] = useState<WalletBalance[]>(
     DEMO_WALLETS.map(w => ({ address: w.address, balance: null, loading: false }))
@@ -90,7 +92,11 @@ export default function HomePage() {
 
       addActivity('request', `Balance updated: ${(balanceValue / 1e9).toFixed(4)} SOL`);
     } catch (error) {
-      console.error('Failed to fetch balance:', error);
+      // Only log non-403 errors to reduce console noise
+      const is403Error = error instanceof Error && error.message.includes('403');
+      if (!is403Error) {
+        console.error('Failed to fetch balance:', error);
+      }
       setWalletBalances(prev =>
         prev.map(w =>
           w.address === address
@@ -98,7 +104,10 @@ export default function HomePage() {
             : w
         )
       );
-      addActivity('error', `Failed to fetch balance for ${address.slice(0, 8)}`);
+      const errorMessage = is403Error 
+        ? `Rate limited - please configure API keys for better reliability`
+        : `Failed to fetch balance for ${address.slice(0, 8)}`;
+      addActivity('error', errorMessage);
     }
   }, [addActivity]);
 
@@ -113,6 +122,25 @@ export default function HomePage() {
       setAppState('dashboard');
     }, 500);
   }, [fetchBalance]);
+
+  // Refetch function that doesn't change app state
+  const refetchBalances = useCallback(async () => {
+    if (appState !== 'dashboard') return;
+    for (const wallet of DEMO_WALLETS) {
+      await fetchBalance(wallet.address);
+      await new Promise(resolve => setTimeout(resolve, 300));
+    }
+  }, [fetchBalance, appState]);
+
+  // Register refetch function when on dashboard
+  useEffect(() => {
+    if (appState === 'dashboard') {
+      registerRefetch(refetchBalances);
+      return () => {
+        unregisterRefetch();
+      };
+    }
+  }, [appState, registerRefetch, unregisterRefetch, refetchBalances]);
 
   const updateStats = useCallback(() => {
     try {
@@ -187,7 +215,7 @@ export default function HomePage() {
       <div>
         <h1 className="text-2xl sm:text-3xl font-semibold text-text-primary mb-2">Wallet Tracker</h1>
         <p className="text-sm sm:text-base text-text-secondary">
-          Monitor Solana wallets in real-time using RunicRPC load balancer
+          Monitor Solana wallets in real-time using runicRPC load balancer
         </p>
       </div>
 
